@@ -96,6 +96,13 @@ wait"ms"
 wait"s"
 ```
 
+# "Macros" (Inline Python) **NOT SAFE, NO SANDBOXING EXISTS YET**
+```
+inline|interpreter.context.set_selected("Hello World")|
+^
+```
+Much more is possible with this, but I will not show more until I finish sandboxing it.
+
 # Writing Modules
 
 Custom Module Example
