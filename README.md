@@ -13,3 +13,6 @@ There will be no guaranteed support for this I simply made this to remind myself
 # Planned Modules
 - [ ] Error Handling Module
 - [ ] Named Variables Module (Kinda breaks the main program idea)
+
+# Documentation
+[Click Here](https://github.com/TheEmeraldBee/Braithon/blob/main/DOCUMENTATION.md)
