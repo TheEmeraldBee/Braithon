@@ -1,7 +1,7 @@
 from prelude import *
 
 class Console:
-    def __init__(self, modules=FULL_PLUS):
+    def __init__(self, modules=FULL):
         self.interpreter: Interpreter = Interpreter().with_modules(modules)
 
     def run(self):

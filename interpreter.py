@@ -121,8 +121,27 @@ class Context:
 class Interpreter:
     def __init__(self):
         self.modules = []
+        self.disabled_modules = []
         self.context = Context()
         self.nests: [(str, str)] = []
+
+    def disable_module(self, ident):
+        for module in self.modules:
+            if module.IDENTIFIER == ident:
+                self.modules.remove(module)
+                self.disabled_modules.append(module)
+                return Result()
+
+        return Result().with_error(Error(-1, f"Module {ident} either doesn't exist or is already disabled!"))
+
+    def enable_module(self, ident):
+        for module in self.disabled_modules:
+            if module.IDENTIFIER == ident:
+                self.modules.append(module)
+                self.disabled_modules.remove(module)
+                return Result()
+
+        return Result().with_error(Error(-1, f"Module {ident} either doesn't exist or is already enabled!"))
 
     def register_nest(self, start_command: str, end_command: str):
         self.nests.append((start_command, end_command))

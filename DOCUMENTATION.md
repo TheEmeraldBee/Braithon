@@ -96,12 +96,64 @@ wait"ms"
 wait"s"
 ```
 
-# "Macros" (Inline Python) **NOT SAFE, NO SANDBOXING EXISTS YET**
+# Inline Python (Macro Module) (NOT SANDBOXED)
 ```
-inline|interpreter.context.set_selected("Hello World")|
+# You can run inline python!
+inline|interpreter.context.set_selected(-1)|
 ^
 ```
-Much more is possible with this, but I will not show more until I finish sandboxing it.
+
+# "Macros"
+No, these are not true macros, but they are powerful!
+
+Examples:
+
+## Print Hello, {Selected}
+```
+function"Hello"{macro|p"Hello, [@]"|}
+s"Emerald"
+r"Hello"
+```
+
+## Print the current program cursor
+```
+function"Selected"{macro|p"[!]"|}
+r"Selected"
+>>
+r"Selected"
+```
+
+## Combine the next 2 program values into 1 string!
+```
+function"Combine"{
+	macro|s"[@][@]"|
+	# Clear the other input
+	> %0
+
+	# Go Back
+	<
+}
+
+s"Hello, "
+>
+s"World"
+$0 r"Combine"
+^
+```
+
+## But how?!?!
+```
+# Inside macros, there are 2 different ways to get information
+# the [@] type will be replaced by the value of current program cursor.
+# the [!] type will be replaced by the current program cursor.
+# Once one is used, the program cursor will automatically be moved 1 to the right.
+```
+
+# Sandboxing
+Sandboxing is super important if you are going to allow access to the codebase or run code.
+
+You can enable and disable modules using `mod_enable"ModIdentifier"`, 
+and `mod_disable"ModIdentifier"` respectively!
 
 # Writing Modules
 

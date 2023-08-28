@@ -18,6 +18,8 @@ from scope_module import ScopeModule
 
 from macro_module import MacroModule
 
+from sandboxing_module import SandboxingModule
+
 # Create default module sets
 
 # The minimal amount required to replecate brainfuck. (missing some features)
@@ -41,14 +43,12 @@ FULL = [
     LoopModule(),
     FunctionModule(),
     ConditionalModule(),
+    MacroModule(),
+    SandboxingModule(),
     ScopeModule(),
     StringModule(),
     TimingModule(),
     InputModule(),
     CommentModule(),
     WhitespaceModule()
-]
-
-FULL_PLUS = FULL + [
-    MacroModule()
 ]
