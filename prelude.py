@@ -16,6 +16,8 @@ from timing_module import TimingModule
 from input_module import InputModule
 from scope_module import ScopeModule
 
+from macro_module import MacroModule
+
 # Create default module sets
 
 # The minimal amount required to replecate brainfuck. (missing some features)
@@ -45,4 +47,8 @@ FULL = [
     InputModule(),
     CommentModule(),
     WhitespaceModule()
+]
+
+FULL_PLUS = FULL + [
+    MacroModule()
 ]
