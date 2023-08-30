@@ -33,35 +33,40 @@ class MacroModule(Module):
 
             macro = str(macro_result.unwrap())
             tracking_macro = macro
+            idx = 0
 
             moves = 0
 
-            # Time to parse the macro result
-            while "[@]" in tracking_macro:
-                macro = macro.replace(
-                    "[@]", str(interpreter.context.selected_value()), 1
-                )
-                tracking_macro = tracking_macro.replace("[@]", "", 1)
-                # Move the cursor
-                interpreter.context.move_cursor(1)
-                moves += 1
+            while idx < len(tracking_macro):
+                idx += 1
+                check = tracking_macro[0:idx]
 
-            while "[!]" in tracking_macro:
-                macro = macro.replace("[!]", f"{interpreter.context.cursor}")
-                tracking_macro = tracking_macro.replace("[!]", "", 1)
-                # Move the cursor
-                interpreter.context.move_cursor(1)
-                moves += 1
+                # Time to parse the macro result
+                if "[@]" in check:
+                    macro = macro.replace(
+                        "[@]", str(interpreter.context.selected_value()), 1
+                    )
+                    tracking_macro = tracking_macro.replace("[@]", "", 1)
+                    # Move the cursor
+                    interpreter.context.move_cursor(1)
+                    moves += 1
 
-            while "[@.]" in tracking_macro:
-                macro = macro.replace(
-                    "[@.]", str(interpreter.context.selected_value()), 1
-                )
-                tracking_macro = tracking_macro.replace("[@.]", "", 1)
+                if "[!]" in check:
+                    macro = macro.replace("[!]", f"{interpreter.context.cursor}")
+                    tracking_macro = tracking_macro.replace("[!]", "", 1)
+                    # Move the cursor
+                    interpreter.context.move_cursor(1)
+                    moves += 1
 
-            while "[!.]" in tracking_macro:
-                macro = macro.replace("[!.]", f"{interpreter.context.cursor}")
-                tracking_macro = tracking_macro.replace("[!.]", "", 1)
+                if "[@.]" in check:
+                    macro = macro.replace(
+                        "[@.]", str(interpreter.context.selected_value()), 1
+                    )
+                    tracking_macro = tracking_macro.replace("[@.]", "", 1)
+
+                if "[!.]" in check:
+                    macro = macro.replace("[!.]", f"{interpreter.context.cursor}")
+                    tracking_macro = tracking_macro.replace("[!.]", "", 1)
 
             interpreter.context.move_cursor(-moves)
 
