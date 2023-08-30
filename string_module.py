@@ -18,9 +18,19 @@ class StringModule(Module):
                 result = interpreter.context.get_pair_after()
                 if result.is_ok():
                     value = result.unwrap()
+                    print(value, end="")
+                else:
+                    return result
+            case "l":
+                result = interpreter.context.get_pair_after()
+                if result.is_ok():
+                    value = result.unwrap()
                     print(value)
                 else:
                     return result
+            case "/":
+                # Newline!
+                print()
             case _:
                 return None
 

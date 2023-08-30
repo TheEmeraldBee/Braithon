@@ -3,8 +3,8 @@
 [Link](https://en.wikipedia.org/wiki/Brainfuck) To Wikepedia
 
 # To those of you that want to know everything
-Brainfuck works in a very simple way. This, does not. With the extended module enabled, 
-you have all of the same methods that brainfuck has, + more :)
+Brainf\*ck works in a very simple way. This, does not. With the extended module enabled, 
+you have all of the same methods that brainf\*ck has, + more :)
 
 For example, you can use numbers to speed up the development process!
 

@@ -55,7 +55,10 @@ class Context:
         return int(result)
 
     # Tries to get the items inside a pair of characters after the current selection
-    def get_pair_after(self, pair='"') -> Result:
+    def get_pair_after(self, pair='"', end_pair=None) -> Result:
+        if end_pair == None:
+            end_pair = pair
+
         if not self.advance():
             return Result().with_error(
                 Error(-1, f"Expected char '{pair}' but found EOF")
@@ -71,17 +74,17 @@ class Context:
         if not self.advance(1):
             self.advance(-1)
             return Result().with_error(
-                Error(-1, f"Expected char '{pair} but found EOF'")
+                Error(-1, f"Expected char '{end_pair} but found EOF'")
             )
 
         result = ""
 
-        while self.command() != pair:
+        while self.command() != end_pair:
             result += self.command()
 
             if not self.advance(1):
                 return Result().with_error(
-                    Error(-1, f"Expected char '{pair}' but found EOF")
+                    Error(-1, f"Expected char '{end_pair}' but found EOF")
                 )
 
         # This pair is finished
