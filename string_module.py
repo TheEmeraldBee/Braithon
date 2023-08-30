@@ -1,20 +1,20 @@
 from interpreter import *
 
+
 class StringModule(Module):
     IDENTIFIER = "String"
     INCOMPATIBLE_IDENTIFIERS = []
 
-    def handle_command(self, interpreter: Interpreter) -> Result:
-
+    def handle_command(self, interpreter: Interpreter):
         match interpreter.context.command():
-            case 's':
+            case "s":
                 result = interpreter.context.get_pair_after()
                 if result.is_ok():
                     value = result.unwrap()
                     interpreter.context.set_selected(value)
                 else:
                     return result
-            case 'p':
+            case "p":
                 result = interpreter.context.get_pair_after()
                 if result.is_ok():
                     value = result.unwrap()
@@ -23,6 +23,5 @@ class StringModule(Module):
                     return result
             case _:
                 return None
-        
-        return Result()
 
+        return Result()

@@ -1,6 +1,6 @@
 from prelude import *
 
-with open("example_file.bf", 'r') as file:
+with open("example_file.bf", "r") as file:
     text = file.read()
 
     interpreter = Interpreter().with_modules(FULL)

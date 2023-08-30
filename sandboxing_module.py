@@ -1,10 +1,11 @@
 from interpreter import *
 
+
 class SandboxingModule(Module):
     IDENTIFIER = "Sandboxing"
     INCOMPATIBLE_IDENTIFIERS = []
 
-    def handle_command(self, interpreter: Interpreter) -> Result:
+    def handle_command(self, interpreter: Interpreter):
         if interpreter.context.command_keyword("mod_disable"):
             identifier_result = interpreter.context.get_pair_after()
 
@@ -14,7 +15,7 @@ class SandboxingModule(Module):
             identifier = identifier_result.unwrap()
 
             return interpreter.disable_module(identifier)
-            
+
         if interpreter.context.command_keyword("mod_enable"):
             identifier_result = interpreter.context.get_pair_after()
 

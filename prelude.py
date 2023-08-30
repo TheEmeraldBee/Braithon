@@ -2,8 +2,8 @@ from error import *
 from interpreter import *
 
 # Import all default modules
-from brainfuck_module import BrainfuckModule
-from brainfuck_extended_module import BrainfuckExtendedModule
+from simple_base_module import SimpleBaseModule
+from base_module import BaseModule
 
 from loop_module import LoopModule
 from conditional_module import ConditionalModule
@@ -22,24 +22,20 @@ from sandboxing_module import SandboxingModule
 
 # Create default module sets
 
-# The minimal amount required to replecate brainfuck. (missing some features)
-MINIMAL_SET = [
-    BrainfuckModule(),
-    LoopModule(),
-    WhitespaceModule()
-]
+# The minimal amount required to replecate brainf*ck. (missing some features)
+MINIMAL_SET = [SimpleBaseModule(), LoopModule(), WhitespaceModule()]
 
-# Improves on the features of brainfuck without adding new commands (Other than 1)
+# Improves on the features of brainf*ck without adding new commands (Other than 1)
 EXTENDED_SET = [
-    BrainfuckExtendedModule(),
+    BaseModule(),
     LoopModule(),
     CommentModule(),
-    WhitespaceModule()
+    WhitespaceModule(),
 ]
 
 # All of the default feature sets
 FULL = [
-    BrainfuckExtendedModule(),
+    BaseModule(),
     LoopModule(),
     FunctionModule(),
     ConditionalModule(),
@@ -50,5 +46,5 @@ FULL = [
     TimingModule(),
     InputModule(),
     CommentModule(),
-    WhitespaceModule()
+    WhitespaceModule(),
 ]

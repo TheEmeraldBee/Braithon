@@ -1,4 +1,3 @@
-
 class Error:
     def __init__(self, code, message):
         self.code = code
@@ -6,7 +5,8 @@ class Error:
 
     def __repr__(self):
         return f"Code: {self.code}, Message: {self.message}"
-        
+
+
 class Result:
     def __init__(self):
         self.ok = True
@@ -53,5 +53,3 @@ class Result:
             return ""
         else:
             return f"Error {self.err}"
-    
-

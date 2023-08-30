@@ -1,6 +1,6 @@
 
 # Braithon
-The brainfuck clone no one though they needed
+The brainf*ck clone no one though they needed
 
 ## WARNING: This is a joke
 There will be no guaranteed support for this I simply made this to remind myself how python works for college.

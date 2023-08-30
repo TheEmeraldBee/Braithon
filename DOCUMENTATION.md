@@ -3,7 +3,8 @@
 [Link](https://en.wikipedia.org/wiki/Brainfuck) To Wikepedia
 
 # To those of you that want to know everything
-Brainfuck works in a very simple way. This, does not. With the extended module enabled, you have all of the same methods that brainfuck has, + more :)
+Brainfuck works in a very simple way. This, does not. With the extended module enabled, 
+you have all of the same methods that brainfuck has, + more :)
 
 For example, you can use numbers to speed up the development process!
 
@@ -78,10 +79,10 @@ $1 %50
 # Inputs
 ```
 $0 input"int"
-$1 input"string"
+$1 input"str"
 
 # This will run this as code!
-input"code"
+input"eval"
 
 $0^
 $1^

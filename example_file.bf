@@ -3,7 +3,7 @@ function"attempts"{$0}
 
 # Expects $0 to be attempts, $2 to be the question message, and $150 to be the answer to the question
 function"check"{
-	// # Set the correct loop to running
+	# Set the correct loop to running
 	$1 %1
 
 	[

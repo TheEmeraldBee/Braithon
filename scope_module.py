@@ -1,6 +1,7 @@
 from interpreter import *
 from copy import deepcopy
 
+
 class ScopeModule(Module):
     IDENTIFIER = "Scope"
     INCOMPATIBLE_IDENTIFIERS = []
@@ -8,8 +9,8 @@ class ScopeModule(Module):
     def setup(self, interpreter: Interpreter):
         interpreter.register_nest("{", "}")
 
-    def handle_command(self, interpreter: Interpreter) -> Result:
-        if interpreter.context.command() == '{':
+    def handle_command(self, interpreter: Interpreter):
+        if interpreter.context.command() == "{":
             if not interpreter.context.advance():
                 return Result().with_error(Error(-1, "Expected '}' but got EOF"))
 

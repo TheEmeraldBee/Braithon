@@ -1,10 +1,11 @@
 from interpreter import *
 
+
 class InputModule(Module):
     IDENTIFIER = "Input"
     INCOMPATIBLE_IDENTIFIERS = []
 
-    def handle_command(self, interpreter: Interpreter) -> Result:
+    def handle_command(self, interpreter: Interpreter):
         if interpreter.context.command_keyword("input"):
             type_anotation_result = interpreter.context.get_pair_after()
 
@@ -13,16 +14,21 @@ class InputModule(Module):
 
             type_anotation = type_anotation_result.unwrap()
 
-            in_value = input()
             match type_anotation:
-                case 'str':
+                case "str":
+                    in_value = input()
                     interpreter.context.set_selected(in_value)
-                case 'int':
+                case "int":
                     try:
+                        in_value = input()
                         interpreter.context.set_selected(int(in_value))
                     except:
-                        return Result().with_error(Error(-1, f"Expected a number input but got '{in_value}'"))
-                case 'code':
+                        return Result().with_error(
+                            Error(-1, f"Expected a number input")
+                        )
+                case "eval":
+                    in_value = input()
+
                     # Clone the current context
                     context = interpreter.context.current()
 
@@ -35,10 +41,16 @@ class InputModule(Module):
 
                     # Reset the context
                     interpreter.context.program_string = context.program_string
-                    interpreter.context.program_string_cursor = context.program_string_cursor
-                    
+                    interpreter.context.program_string_cursor = (
+                        context.program_string_cursor
+                    )
+
                 case _:
-                    return Result().with_error(Error(-1, f"Expected 'str', 'int', or 'eval', but got {type_anotation}"))
+                    return Result().with_error(
+                        Error(
+                            -1,
+                            f"Expected 'str', 'int', or 'eval', but got {type_anotation}",
+                        )
+                    )
 
             return Result()
-

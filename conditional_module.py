@@ -1,5 +1,5 @@
-
 from interpreter import *
+
 
 class ConditionalModule(Module):
     IDENTIFIER = "Conditional"
@@ -8,8 +8,8 @@ class ConditionalModule(Module):
     def setup(self, interpreter: Interpreter):
         interpreter.register_nest("{", "}")
 
-    def handle_command(self, interpreter: Interpreter) -> Result:
-        if not interpreter.context.command() == '(':
+    def handle_command(self, interpreter: Interpreter):
+        if not interpreter.context.command() == "(":
             return None
 
         # ( Was found, so it could be a conditional
@@ -18,7 +18,7 @@ class ConditionalModule(Module):
 
         if condition_1 == None:
             return Result().with_error(Error(-1, "If statement expected number"))
-        
+
         if not interpreter.context.advance():
             return Result().with_error(Error(-1, "Expected Conditions, but found EOF"))
 
@@ -33,14 +33,18 @@ class ConditionalModule(Module):
         if not interpreter.context.advance():
             return Result().with_error(Error(-1, "Expected ')', but found EOF"))
 
-        if interpreter.context.command() != ')':
-            return Result().with_error(Error(-1, f"Expected ')' but got {interpreter.context.command()}"))
+        if interpreter.context.command() != ")":
+            return Result().with_error(
+                Error(-1, f"Expected ')' but got {interpreter.context.command()}")
+            )
 
         if not interpreter.context.advance():
             return Result().with_error(Error(-1, "Expected '{', but found EOF"))
 
-        if interpreter.context.command() != '{':
-            return Result().with_error(Error(-1, f"Expected '{'{'}' but got {interpreter.context.command()}"))
+        if interpreter.context.command() != "{":
+            return Result().with_error(
+                Error(-1, f"Expected '{'{'}' but got {interpreter.context.command()}")
+            )
 
         if not interpreter.context.advance():
             return Result().with_error(Error(-1, "Expected '}', but found EOF"))
@@ -48,16 +52,27 @@ class ConditionalModule(Module):
         # Apply the check
         should_run = False
         match sign:
-            case '<':
-                should_run = interpreter.context.program[condition_1] < interpreter.context.program[condition_2]
-            case '>':
-                should_run = interpreter.context.program[condition_1] > interpreter.context.program[condition_2]
-            case '=':
-                should_run = interpreter.context.program[condition_1] == interpreter.context.program[condition_2]
+            case "<":
+                should_run = (
+                    interpreter.context.program[condition_1]
+                    < interpreter.context.program[condition_2]
+                )
+            case ">":
+                should_run = (
+                    interpreter.context.program[condition_1]
+                    > interpreter.context.program[condition_2]
+                )
+            case "=":
+                should_run = (
+                    interpreter.context.program[condition_1]
+                    == interpreter.context.program[condition_2]
+                )
             case _:
-                return Result().with_error(Error(-1, f"Expected '<', '>', or '=', but got '{sign}'"))
+                return Result().with_error(
+                    Error(-1, f"Expected '<', '>', or '=', but got '{sign}'")
+                )
 
-        inner_block_result = interpreter.get_code_until('}')
+        inner_block_result = interpreter.get_code_until("}")
 
         if not inner_block_result.is_ok():
             return inner_block_result
@@ -67,7 +82,7 @@ class ConditionalModule(Module):
         else_block = None
 
         interpreter.context.advance()
-        if interpreter.context.command() == '{':
+        if interpreter.context.command() == "{":
             if not interpreter.context.advance():
                 return Result().with_error(Error(-1, "Expected '}', but found EOF"))
 
@@ -97,7 +112,3 @@ class ConditionalModule(Module):
         interpreter.context.program_string_cursor = past_program.program_string_cursor
 
         return Result()
-
-
-        
-        

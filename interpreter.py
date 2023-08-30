@@ -1,7 +1,8 @@
 from error import *
 import copy
 
-NUMBERS = '0123456789'
+NUMBERS = "0123456789"
+
 
 class Context:
     def __init__(self):
@@ -17,13 +18,16 @@ class Context:
         self.program_string_cursor = -1
 
     def advance(self, value=1) -> bool:
-        if self.program_string_cursor + value >= len(self.program_string) or self.program_string_cursor + value < 0:
+        if (
+            self.program_string_cursor + value >= len(self.program_string)
+            or self.program_string_cursor + value < 0
+        ):
             return False
-        
+
         self.program_string_cursor += value
         return True
 
-    def command(self) -> chr:
+    def command(self):
         return self.program_string[self.program_string_cursor]
 
     # Tries to get the number following directly after the current selection
@@ -53,31 +57,39 @@ class Context:
     # Tries to get the items inside a pair of characters after the current selection
     def get_pair_after(self, pair='"') -> Result:
         if not self.advance():
-            return Result().with_error(Error(-1, f"Expected char '{pair}' but found EOF"))
+            return Result().with_error(
+                Error(-1, f"Expected char '{pair}' but found EOF")
+            )
 
         if not self.command() == pair:
             err_command = self.command()
             self.advance(-1)
-            return Result().with_error(Error(-1, f"Expected char '{pair}' but found '{err_command}'"))
+            return Result().with_error(
+                Error(-1, f"Expected char '{pair}' but found '{err_command}'")
+            )
 
         if not self.advance(1):
             self.advance(-1)
-            return Result().with_error(Error(-1, f"Expected char '{pair} but found EOF'"))
+            return Result().with_error(
+                Error(-1, f"Expected char '{pair} but found EOF'")
+            )
 
-        result = "";
+        result = ""
 
         while self.command() != pair:
             result += self.command()
 
             if not self.advance(1):
-                return Result().with_error(Error(-1, f"Expected char '{pair}' but found EOF"))
+                return Result().with_error(
+                    Error(-1, f"Expected char '{pair}' but found EOF")
+                )
 
         # This pair is finished
         return Result().with_value(result)
 
     def command_keyword(self, keyword) -> bool:
         start_loc = self.program_string_cursor
-        
+
         # Checks for a keyword
         for character in keyword:
             if self.command() != character:
@@ -87,7 +99,6 @@ class Context:
 
         self.advance(-1)
         return True
-            
 
     def current(self):
         return copy.deepcopy(self)
@@ -100,7 +111,10 @@ class Context:
     ############### PROGRAM FUNCTIONALITY ###############
 
     def move_cursor(self, distance: int) -> bool:
-        if self.cursor + distance >= len(self.program) - 1 or self.cursor + distance < 0:
+        if (
+            self.cursor + distance >= len(self.program) - 1
+            or self.cursor + distance < 0
+        ):
             return False
 
         self.cursor += distance
@@ -118,12 +132,13 @@ class Context:
     def set_selected(self, value):
         self.program[self.cursor] = value
 
+
 class Interpreter:
     def __init__(self):
         self.modules = []
         self.disabled_modules = []
         self.context = Context()
-        self.nests: [(str, str)] = []
+        self.nests = []
 
     def disable_module(self, ident):
         for module in self.modules:
@@ -132,7 +147,9 @@ class Interpreter:
                 self.disabled_modules.append(module)
                 return Result()
 
-        return Result().with_error(Error(-1, f"Module {ident} either doesn't exist or is already disabled!"))
+        return Result().with_error(
+            Error(-1, f"Module {ident} either doesn't exist or is already disabled!")
+        )
 
     def enable_module(self, ident):
         for module in self.disabled_modules:
@@ -141,17 +158,26 @@ class Interpreter:
                 self.disabled_modules.remove(module)
                 return Result()
 
-        return Result().with_error(Error(-1, f"Module {ident} either doesn't exist or is already enabled!"))
+        return Result().with_error(
+            Error(-1, f"Module {ident} either doesn't exist or is already enabled!")
+        )
 
     def register_nest(self, start_command: str, end_command: str):
         self.nests.append((start_command, end_command))
 
     def with_module(self, module):
         for mounted_module in self.modules:
-            if module.IDENTIFIER in mounted_module.INCOMPATIBLE_IDENTIFIERS or mounted_module.IDENTIFIER in module.INCOMPATIBLE_IDENTIFIERS:
-                raise Exception(f"Module {module.IDENTIFIER} is incompatible with {mounted_module.IDENTIFIER}")
+            if (
+                module.IDENTIFIER in mounted_module.INCOMPATIBLE_IDENTIFIERS
+                or mounted_module.IDENTIFIER in module.INCOMPATIBLE_IDENTIFIERS
+            ):
+                raise Exception(
+                    f"Module {module.IDENTIFIER} is incompatible with {mounted_module.IDENTIFIER}"
+                )
             if module.IDENTIFIER == mounted_module.IDENTIFIER:
-                raise Exception(f"Module {module.IDENTIFIER} already exists in interpreter")
+                raise Exception(
+                    f"Module {module.IDENTIFIER} already exists in interpreter"
+                )
         module.setup(self)
         self.modules.append(module)
         return self
@@ -189,10 +215,11 @@ class Interpreter:
             self.context = cur_context
             return result
 
+        return Result().with_error(
+            Error(1, f"Command '{self.context.command()}' is not recognized")
+        )
 
-        return Result().with_error(Error(1, f"Command '{self.context.command()}' is not recognized"))
-
-    def handle_until(self, command) -> Result:
+    def handle_until(self, command):
         while self.context.command() != command:
             result = self.handle_command()
 
@@ -200,7 +227,9 @@ class Interpreter:
                 return result
 
             if not self.context.advance():
-                return Result().with_error(Error(-1, f"Expected '{command}' but found EOF"))
+                return Result().with_error(
+                    Error(-1, f"Expected '{command}' but found EOF")
+                )
 
     def get_code_until(self, command) -> Result:
         start_loc = self.context.program_string_cursor
@@ -212,14 +241,18 @@ class Interpreter:
 
         end_loc = self.context.program_string_cursor
 
-        return Result().with_value(self.context.program_string[start_loc:end_loc].strip())
+        return Result().with_value(
+            self.context.program_string[start_loc:end_loc].strip()
+        )
 
-    def skip_until(self, command) -> Result:
+    def skip_until(self, command):
         while self.context.command() != command:
             for nest in self.nests:
                 if nest[0] == self.context.command():
                     if not self.context.advance():
-                        return Result().with_error(Error(1, f"Expected '{nest[1]}' but found EOF"))
+                        return Result().with_error(
+                            Error(1, f"Expected '{nest[1]}' but found EOF")
+                        )
 
                     result = self.skip_until(nest[1])
 
@@ -227,7 +260,10 @@ class Interpreter:
                         return result
 
             if not self.context.advance():
-                return Result().with_error(Error(1, f"Expected '{command}' but found EOF"))
+                return Result().with_error(
+                    Error(1, f"Expected '{command}' but found EOF")
+                )
+
 
 class Module:
     IDENTIFIER = None
@@ -235,6 +271,6 @@ class Module:
 
     def setup(self, interpreter: Interpreter):
         pass
-    
-    def handle_command(self, interpreter: Interpreter) -> Result:
+
+    def handle_command(self, interpreter: Interpreter):
         raise NotImplementedError()
