@@ -42,13 +42,13 @@ class BaseModule(Module):
                         Error(-1, "Command ',' expected a number but did not find one.")
                     )
             case "^":
-                print(interpreter.context.selected_value())
+                print(interpreter.context.selected_value(), end="")
             case ".":
                 if (
                     type(interpreter.context.selected_value()) is int
                     and interpreter.context.selected_value() >= 0
                 ):
-                    print(chr(interpreter.context.selected_value()))
+                    print(chr(interpreter.context.selected_value()), end="")
                 else:
                     return Result().with_error(
                         Error(

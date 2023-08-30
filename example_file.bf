@@ -7,8 +7,9 @@ function"check"{
 	$1 %1
 
 	[
+		/////
 		# Print the question
-		$2 ^
+		$2 ^ /
 		
 		# Get the user input as a string
 		$151 input"str"
@@ -25,9 +26,9 @@ function"check"{
 				$1 %0
 			}{
 				# Print the number of attempts left
-				p"Incorrect, you have"
+				p"Incorrect, you have "
 				^
-				p"attempts left."
+				p" attempts left."/
 			}
 		}
 
@@ -59,6 +60,8 @@ r"check"
 
 # If the player has no lives, let them know that they failed.
 (0=1000){
-	p"You are out of lives, therfore you lose. Sorry!"
+	p"You are out of lives, therefore you lose. Sorry!"
+	exit
+}{
+	p"You Win! Great Job"
 }
-

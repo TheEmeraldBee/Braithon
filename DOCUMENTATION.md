@@ -62,6 +62,18 @@ r"function_name_here"
 ^
 ```
 
+```
+s{
+	+150
+	>
+	+150
+}
+
+# This is selective scope, so only the index selected at the start is reverted!
+^ > ^
+# Output: 0150
+```
+
 # Conditionals
 ```
 $0 %30

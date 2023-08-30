@@ -53,7 +53,7 @@ class SimpleBaseModule(Module):
                         )
                     )
             case ".":
-                print(chr(interpreter.context.selected_value()))
+                print(chr(interpreter.context.selected_value()), end="")
 
             case _:
                 # The Command Was Not Handled

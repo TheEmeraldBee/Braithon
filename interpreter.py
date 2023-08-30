@@ -197,6 +197,9 @@ class Interpreter:
     def handle_program(self) -> Result:
         while self.context.advance():
             result = self.handle_command()
+            if result.break_amount > 0:
+                # A break happened, but everything is ok.
+                return Result()
             if not result.is_ok():
                 return result
 
@@ -208,8 +211,14 @@ class Interpreter:
         for module in self.modules:
             temp_result = module.handle_command(self)
             if temp_result:
-                if not temp_result.is_ok():
+                if temp_result.break_amount > 0:
+                    return temp_result
+                elif not temp_result.is_ok():
                     result = temp_result
+                    # Reset the cursor
+                    self.context.program_string_cursor = (
+                        cur_context.program_string_cursor
+                    )
                 else:
                     return Result()
 

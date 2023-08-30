@@ -67,9 +67,14 @@ class ConditionalModule(Module):
                     interpreter.context.program[condition_1]
                     == interpreter.context.program[condition_2]
                 )
+            case "!":
+                should_run = (
+                    interpreter.context.program[condition_1]
+                    != interpreter.context.program[condition_2]
+                )
             case _:
                 return Result().with_error(
-                    Error(-1, f"Expected '<', '>', or '=', but got '{sign}'")
+                    Error(-1, f"Expected '<', '>', '!', or '=', but got '{sign}'")
                 )
 
         inner_block_result = interpreter.get_code_until("}")
