@@ -20,6 +20,8 @@ from macro_module import MacroModule
 
 from sandboxing_module import SandboxingModule
 
+from alias_module import AliasModule
+
 # Create default module sets
 
 # The minimal amount required to replecate brainf*ck. (missing some features)
@@ -40,6 +42,7 @@ FULL = [
     FunctionModule(),
     ConditionalModule(),
     MacroModule(),
+    AliasModule(),
     SandboxingModule(),
     ScopeModule(),
     StringModule(),

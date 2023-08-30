@@ -5,8 +5,10 @@ NUMBERS = "0123456789"
 
 
 class Context:
+    PROGRAM_SIZE = 4096
+
     def __init__(self):
-        self.program = [0] * 4096
+        self.program = [0] * self.PROGRAM_SIZE
         self.cursor = 0
         self.program_string = ""
         self.program_string_cursor = -1
